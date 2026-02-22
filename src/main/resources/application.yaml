@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: fake-smtp-server
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${DB_NAME:smtp_db}
+    username: ${DB_USER:developer}
+    password: ${DB_PASSWORD:developer}
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api/v1
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000}
+minio:
+  url: ${MINIO_URL:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:changemeuser}
+  secret-key: ${MINIO_SECRET_KEY:changemepass}
+  bucket-name: ${MINIO_BUCKET_NAME:fake-smtp}
+
