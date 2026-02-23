@@ -5,9 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.type.SqlTypes;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +19,7 @@ import java.util.UUID;
 @Table(name = "emails")
 @Getter
 @Setter
+@SQLRestriction("status <> 'DELETED'") // SQL restriction to exclude deleted emails
 public class EmailEntity extends BaseModel {
 
     @Id

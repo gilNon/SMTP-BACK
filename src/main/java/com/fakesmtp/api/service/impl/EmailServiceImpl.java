@@ -2,6 +2,7 @@ package com.fakesmtp.api.service.impl;
 
 import com.fakesmtp.api.dto.response.EmailResponse;
 import com.fakesmtp.api.dto.response.PagesDataResponse;
+import com.fakesmtp.api.enums.EmailStatus;
 import com.fakesmtp.api.enums.MessageErrors;
 import com.fakesmtp.api.exception.GeneralException;
 import com.fakesmtp.api.mapper.EmailMapper;
@@ -47,9 +48,9 @@ public class EmailServiceImpl implements EmailService {
      * @return ListEmailResponse containing a list of EmailResponse objects.
      */
     @Override
-    public PagesDataResponse<List<EmailResponse>> getAllEmails(Pageable pageable, String userName) {
+    public PagesDataResponse<List<EmailResponse>> getAllEmails(Pageable pageable, String emailUser) {
 
-        UserEntity user = userRepository.findByEmail(userName).orElseThrow(() ->
+        UserEntity user = userRepository.findByEmail(emailUser).orElseThrow(() ->
                 new GeneralException(HttpStatus.NOT_FOUND,
                         MessageErrors.USER_NOT_FOUND.getMessage())
         );
@@ -66,19 +67,21 @@ public class EmailServiceImpl implements EmailService {
 
     /**
      * Retrieves a specific email by its ID and maps it to an EmailResponse DTO.
-     * @param id UUID of the email to retrieve.
+     * @param idEmail UUID of the email to retrieve.
      * @return EmailResponse object corresponding to the specified ID.
      * @throws RuntimeException if the email is not found.
      */
     @Override
-    public EmailResponse getEmailById(UUID id, String userName) {
+    public EmailResponse getEmailById(UUID idEmail, String emailUser) {
 
-        UserEntity user = userRepository.findByEmail(userName).orElseThrow(() ->
+        UserEntity user = userRepository.findByEmail(emailUser).orElseThrow(() ->
                 new GeneralException(HttpStatus.NOT_FOUND,
                         MessageErrors.USER_NOT_FOUND.getMessage())
         );
 
-        EmailEntity email = emailRepository.findByIdEmailAndApplication(id, user.getApplication()).orElseThrow(() ->
+        EmailEntity email = emailRepository.findByIdEmailAndApplication(
+                idEmail,
+                user.getApplication()).orElseThrow(() ->
                  new GeneralException(HttpStatus.NOT_FOUND,
                          MessageErrors.EMAIL_NOT_FOUND.getMessage())
         );
@@ -90,6 +93,28 @@ public class EmailServiceImpl implements EmailService {
                 ));
 
         return EmailMapper.toEmailResponse(email);
+    }
+
+    /**
+     * Delete a specific email by its ID.
+     *
+     * @param idEmail        UUID of the email to delete.
+     * @param emailUser Email of the user who is deleting the email.
+     */
+    @Override
+    public void deleteEmail(UUID idEmail, String emailUser) {
+        UserEntity user = userRepository.findByEmail(emailUser).orElseThrow(() ->
+                new GeneralException(HttpStatus.NOT_FOUND,
+                        MessageErrors.USER_NOT_FOUND.getMessage())
+        );
+
+        EmailEntity email = emailRepository.findByIdEmailAndApplication(idEmail, user.getApplication()).orElseThrow(() ->
+                new GeneralException(HttpStatus.NOT_FOUND,
+                        MessageErrors.EMAIL_NOT_FOUND.getMessage())
+        );
+
+        email.setStatus(EmailStatus.DELETED);
+        emailRepository.save(email);
     }
 
 }

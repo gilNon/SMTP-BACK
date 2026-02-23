@@ -12,7 +12,8 @@ public enum MessageErrors {
     USER_NOT_FOUND("User not found"),
     EMAIL_NOT_FOUND("Email not found"),
     INVALID_CREDENTIALS("Invalid or missing token"),
-    ACCESS_DENIED("Access denied");
+    ACCESS_DENIED("Access denied"),
+    APPLICATION_NOT_FOUND("Application not found");
 
     private final String message;
 

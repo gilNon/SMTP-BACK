@@ -18,13 +18,20 @@ public interface EmailService {
      * Retrieves all emails.
      * @return ListEmailResponse containing a list of EmailResponse objects.
      */
-    PagesDataResponse<List<EmailResponse>> getAllEmails(Pageable pageable, String userName);
+    PagesDataResponse<List<EmailResponse>> getAllEmails(Pageable pageable, String emailUser);
 
     /**
      * Retrieves a specific email by its ID.
-     * @param id UUID of the email to retrieve.
+     * @param idEmail UUID of the email to retrieve.
      * @return EmailResponse object corresponding to the specified ID.
      */
-    EmailResponse getEmailById(UUID id, String userName);
+    EmailResponse getEmailById(UUID idEmail, String userName);
+
+    /**
+     * Delete a specific email by its ID.
+     * @param idEmail UUID of the email to delete.
+     * @param emailUser Email of the user who is deleting the email.
+     */
+    void deleteEmail(UUID idEmail, String emailUser);
 
 }

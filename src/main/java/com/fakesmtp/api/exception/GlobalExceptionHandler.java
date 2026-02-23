@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(GeneralException.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(GeneralException ex,
                                                                 HttpServletRequest request) {
-        log.error("General exception at {}", request.getRequestURI(), ex);
+        log.error("General exception at {} | {}", request.getRequestURI(), ex.getMessage());
         HttpStatus status = ex.getStatus();
 
         return ResponseEntity
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex,
                                                          HttpServletRequest request) {
-        log.error("General exception at {}", request.getRequestURI(), ex);
+        log.error("Unexpected exception  {} | {}", request.getRequestURI(), ex.getMessage());
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         return ResponseEntity

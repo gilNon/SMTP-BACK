@@ -27,3 +27,8 @@ minio:
   secret-key: ${MINIO_SECRET_KEY:changemepass}
   bucket-name: ${MINIO_BUCKET_NAME:fake-smtp}
 
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+
