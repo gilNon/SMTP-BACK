@@ -1,13 +1,11 @@
 package com.fakesmtp.api.controller;
 
 import com.fakesmtp.api.dto.request.LoginRequest;
-import com.fakesmtp.api.dto.request.RegisterRequest;
 import com.fakesmtp.api.dto.response.AuthResponse;
 import com.fakesmtp.api.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,19 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authServiceImpl;
-
-    /** 
-     * Register a new user.
-     *
-     * @param request the registration request containing user details
-     * @return the authentication response containing the token
-     */
-    @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
-        log.info("Registering new user with email: {}", request.email());
-        AuthResponse response = authServiceImpl.register(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
 
     /**
      * Login a user.

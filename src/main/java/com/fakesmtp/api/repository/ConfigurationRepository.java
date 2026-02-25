@@ -2,7 +2,6 @@ package com.fakesmtp.api.repository;
 
 import com.fakesmtp.api.enums.ConfigurationTypes;
 import com.fakesmtp.api.model.ConfigurationEntity;
-import com.fakesmtp.api.model.ApplicationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -21,8 +20,19 @@ public interface ConfigurationRepository extends JpaRepository<ConfigurationEnti
      */
     Optional<ConfigurationEntity> findByType(ConfigurationTypes type);
 
+    /**
+     * Finds a configuration by type and value.
+     * @param type the type of the configuration
+     * @param value the value of the configuration
+     * @return the configuration entity
+     */
     Optional<ConfigurationEntity> findByTypeAndValue(ConfigurationTypes type, String value);
 
-    Optional<ConfigurationEntity> findByApplicationAndType(ApplicationEntity application, ConfigurationTypes type);
+    /**
+     * Checks if a configuration exists by type.
+     * @param type the type of the configuration
+     * @return true if the configuration exists, false otherwise
+     */
+    Boolean existsByType(ConfigurationTypes type);
 
 }

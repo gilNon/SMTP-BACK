@@ -55,14 +55,7 @@ public class EmailServiceImpl implements EmailService {
                         MessageErrors.USER_NOT_FOUND.getMessage())
         );
 
-        Page<EmailEntity> page = emailRepository.findAllByApplication(user.getApplication(), pageable);
-        page.getContent().forEach(email ->
-                email.getAttachments().forEach(media ->
-                        media.setMediaURL(minioClientService.getFilePreSigned(
-                                bucketName,
-                                media.getFolder() + "/" + media.getFileName()))));
-
-        return EmailMapper.toListEmailResponse(page);
+       return null;
     }
 
     /**
@@ -79,20 +72,17 @@ public class EmailServiceImpl implements EmailService {
                         MessageErrors.USER_NOT_FOUND.getMessage())
         );
 
-        EmailEntity email = emailRepository.findByIdEmailAndApplication(
-                idEmail,
-                user.getApplication()).orElseThrow(() ->
-                 new GeneralException(HttpStatus.NOT_FOUND,
-                         MessageErrors.EMAIL_NOT_FOUND.getMessage())
-        );
 
+
+        /*
         email.getAttachments().forEach(media ->
                 media.setMediaURL(minioClientService.getFilePreSigned(
                         bucketName,
                         media.getFolder() + "/" + media.getFileName())
                 ));
+        */
 
-        return EmailMapper.toEmailResponse(email);
+        return null;
     }
 
     /**
@@ -103,6 +93,7 @@ public class EmailServiceImpl implements EmailService {
      */
     @Override
     public void deleteEmail(UUID idEmail, String emailUser) {
+        /*
         UserEntity user = userRepository.findByEmail(emailUser).orElseThrow(() ->
                 new GeneralException(HttpStatus.NOT_FOUND,
                         MessageErrors.USER_NOT_FOUND.getMessage())
@@ -115,6 +106,9 @@ public class EmailServiceImpl implements EmailService {
 
         email.setStatus(EmailStatus.DELETED);
         emailRepository.save(email);
+
+         */
+        return;
     }
 
 }

@@ -1,7 +1,6 @@
 package com.fakesmtp.api.config.smtp;
 
 import com.fakesmtp.api.enums.ConfigurationTypes;
-import com.fakesmtp.api.model.ApplicationEntity;
 import com.fakesmtp.api.model.ConfigurationEntity;
 import com.fakesmtp.api.repository.ConfigurationRepository;
 import com.fakesmtp.api.repository.EmailRepository;
@@ -51,9 +50,8 @@ public class SMTPListener implements MessageHandlerFactory {
         ConfigurationEntity userConfig = configurationRepository
                 .findByTypeAndValue(ConfigurationTypes.USER_SMTP, userSMTP)
                 .orElse(null);
-        ApplicationEntity application = userConfig == null ? null : userConfig.getApplication();
 
-        return new SmtpMessageHandler(emailContentService, emailRepository, minioClientService, application, bucketName);
+        return new SmtpMessageHandler(emailContentService, emailRepository, minioClientService, bucketName);
     }
 
 }

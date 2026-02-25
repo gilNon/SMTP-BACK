@@ -1,9 +1,6 @@
 package com.fakesmtp.api.repository;
 
-import com.fakesmtp.api.model.ApplicationEntity;
 import com.fakesmtp.api.model.UserEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -28,13 +25,5 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
      * @return true if user exists, false otherwise.
      */
     boolean existsByEmail(String email);
-
-    /**
-     * Find all users by application.
-     * @param application application entity.
-     * @param pageable page request.
-     * @return page of user entities.
-     */
-    Page<UserEntity> findAllByApplication(ApplicationEntity application, Pageable pageable);
 
 }

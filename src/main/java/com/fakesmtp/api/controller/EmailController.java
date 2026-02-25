@@ -26,7 +26,7 @@ import java.util.UUID;
 @RequestMapping("/emails")
 @AllArgsConstructor
 @Slf4j
-public class MailsController {
+public class EmailController {
 
     private final EmailService emailService;
 
@@ -60,6 +60,11 @@ public class MailsController {
         return ResponseEntity.ok(emailService.getEmailById(idMail, userDetails.getUsername()));
     }
 
+
+    /**
+     * Endpoint to delete an email by its ID.
+     * @param idEmail UUID of the email to delete.
+     */
     @DeleteMapping("/{idEmail}")
     public ResponseEntity<Void> deleteEmailById(
             @PathVariable UUID idEmail,

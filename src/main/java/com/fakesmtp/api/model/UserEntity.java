@@ -29,10 +29,6 @@ public class UserEntity extends BaseModel implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_application")
-    private ApplicationEntity application;
-
     @Column(name = "first_name")
     private String firstName;
 

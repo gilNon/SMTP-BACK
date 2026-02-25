@@ -29,21 +29,6 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * Gets the current user.
-     * @param userDetails the user details
-     * @return the current user
-     */
-    @GetMapping("/me")
-    public ResponseEntity<UserResponse> getCurrentUser(
-            @AuthenticationPrincipal UserDetails userDetails
-    ) {
-        return new ResponseEntity<>(
-                userService.getUserByEmail(userDetails.getUsername()),
-                HttpStatus.OK
-        );
-    }
-
-    /**
      * Gets all users by application.
      * @param userDetails the user details
      * @param pageable the page request
@@ -58,9 +43,6 @@ public class UserController {
                     direction = Sort.Direction.DESC
             ) Pageable pageable
     ) {
-        return new ResponseEntity<>(
-                userService.getAllUsersByApplication(userDetails.getUsername(), pageable),
-                HttpStatus.OK
-        );
+       return null;
     }
 }

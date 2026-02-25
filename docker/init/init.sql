@@ -18,18 +18,10 @@ CREATE TYPE "role" AS ENUM (
   'ADMIN'
 );
 
-CREATE TABLE "applications" (
-  "id_application" UUID PRIMARY KEY,
-  "active" BOOLEAN NOT NULL DEFAULT true,
-  "created_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
-  "updated_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
-);
-
 CREATE TABLE "configurations" (
   "id_configuration" UUID PRIMARY KEY,
-  "type" configuration_type NOT NULL,
+  "type" configuration_type NOT NULL UNIQUE,
   "value" VARCHAR(250) NOT NULL,
-  "id_application" UUID NOT NULL,
   "created_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
   "updated_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
 );
@@ -42,7 +34,6 @@ CREATE TABLE "users" (
   "password" VARCHAR(250) NOT NULL,
   "role" role NOT NULL DEFAULT 'USER',
   "active" BOOLEAN NOT NULL DEFAULT true,
-  "id_application" UUID NOT NULL,
   "created_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
   "updated_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
 );
@@ -50,7 +41,6 @@ CREATE TABLE "users" (
 CREATE TABLE "emails" (
   "id_email" UUID PRIMARY KEY,
   "sender_address" VARCHAR(100),
-  "id_application" UUID NOT NULL,
   "sender_name" VARCHAR(100),
   "recipient_address" VARCHAR(100),
   "recipient_name" VARCHAR(100),
@@ -69,17 +59,8 @@ CREATE TABLE "media" (
   "id_media" UUID PRIMARY KEY,
   "id_email" UUID NOT NULL,
   "file_name" VARCHAR(100) NOT NULL,
-  "folder" VARCHAR(100) NOT NULL,
   "created_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
   "updated_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
 );
 
-CREATE INDEX "idx_user_email" ON "users" ("email");
-
-ALTER TABLE "emails" ADD CONSTRAINT "emails_applications" FOREIGN KEY ("id_application") REFERENCES "applications" ("id_application");
-
-ALTER TABLE "users" ADD CONSTRAINT "users_applications" FOREIGN KEY ("id_application") REFERENCES "applications" ("id_application");
-
 ALTER TABLE "media" ADD CONSTRAINT "media_mail" FOREIGN KEY ("id_email") REFERENCES "emails" ("id_email");
-
-ALTER TABLE "configurations" ADD CONSTRAINT "configurations_application" FOREIGN KEY ("id_application") REFERENCES "applications" ("id_application");

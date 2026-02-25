@@ -54,10 +54,6 @@ public class EmailEntity extends BaseModel {
     )
     List<MediaEntity> attachments;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_application")
-    private ApplicationEntity application;
-
     @Column(name = "cc")
     private String cc;
 

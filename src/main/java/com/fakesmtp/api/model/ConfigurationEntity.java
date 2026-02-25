@@ -32,8 +32,4 @@ public class ConfigurationEntity extends BaseModel {
     @Column(name = "value")
     private String value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_application")
-    private ApplicationEntity application;
-
 }

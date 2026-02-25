@@ -17,6 +17,12 @@ server:
   port: ${SERVER_PORT:8080}
   servlet:
     context-path: /api/v1
+smtp-server:
+  user: ${USER_SMTP}
+  password: ${PASSWORD_SMTP}
+  host: ${HOST_SMTP}
+  ssl: ${SSL_SMTP},
+  tls: ${TLS_SMTP}
 
 jwt:
   secret: ${JWT_SECRET}

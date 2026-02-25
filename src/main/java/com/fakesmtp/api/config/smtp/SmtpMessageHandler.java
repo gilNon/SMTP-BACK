@@ -1,7 +1,6 @@
 package com.fakesmtp.api.config.smtp;
 
 import com.fakesmtp.api.mapper.EmailMapper;
-import com.fakesmtp.api.model.ApplicationEntity;
 import com.fakesmtp.api.model.EmailEntity;
 import com.fakesmtp.api.model.MediaEntity;
 import com.fakesmtp.api.repository.EmailRepository;
@@ -25,7 +24,6 @@ public final class SmtpMessageHandler implements MessageHandler {
     private final EmailContentService emailContentService;
     private final EmailRepository emailRepository;
     private final MinioClientService minioClientService;
-    private final ApplicationEntity application;
 
     private final List<String> recipients = new ArrayList<>();
     private String from;
@@ -40,12 +38,10 @@ public final class SmtpMessageHandler implements MessageHandler {
     public SmtpMessageHandler(EmailContentService emailContentService,
                               EmailRepository emailRepository,
                               MinioClientService minioClientService,
-                              ApplicationEntity application,
                               String bucketName) {
         this.emailContentService = emailContentService;
         this.emailRepository = emailRepository;
         this.minioClientService = minioClientService;
-        this.application = application;
         this.bucketName = bucketName;
     }
 
@@ -72,7 +68,6 @@ public final class SmtpMessageHandler implements MessageHandler {
             log.info("Received email from={} to={} subject={}", from, recipients, receivedEmail.getSubject());
 
             EmailEntity emailToSave = EmailMapper.toEmailEntity(receivedEmail);
-            emailToSave.setApplication(application);
 
             if (!emailToSave.getAttachments().isEmpty()) {
                 emailToSave.getAttachments().forEach(this::uploadMediaEntity);
