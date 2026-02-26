@@ -32,6 +32,7 @@ public class MediaEntity extends BaseModel {
     @Transient
     private DataSource dataSource;
 
+    @Column(name = "folder")
     private String folder;
 
     @Transient

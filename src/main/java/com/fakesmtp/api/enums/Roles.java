@@ -9,6 +9,5 @@ import lombok.Getter;
 @Getter
 public enum Roles {
     USER,
-    ADMIN,
-    SUPERADMIN
+    ADMIN
 }

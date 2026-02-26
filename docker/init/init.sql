@@ -4,7 +4,8 @@ CREATE TYPE "configuration_type" AS ENUM (
   'PORT_SMTP',
   'HOST_SMTP',
   'SSL_SMTP',
-  'TLS_SMTP'
+  'TLS_SMTP',
+  'APP_FIRST_INITIALIZER'
 );
 
 CREATE TYPE "email_status" AS ENUM (
@@ -59,6 +60,7 @@ CREATE TABLE "media" (
   "id_media" UUID PRIMARY KEY,
   "id_email" UUID NOT NULL,
   "file_name" VARCHAR(100) NOT NULL,
+  "folder" VARCHAR(100) NOT NULL,
   "created_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
   "updated_at" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
 );

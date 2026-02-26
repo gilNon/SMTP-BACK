@@ -30,19 +30,19 @@ public class SimpleAuthValidatorImpl implements UsernamePasswordValidator {
      * @throws LoginFailedException if the authentication fails.
      */
     @Override
-    public void login(String username, String password, MessageContext messageContext) throws LoginFailedException {
+    public void login(String username, String password, MessageContext messageContext)
+            throws LoginFailedException {
+
         ConfigurationEntity userConfig = configurationRepository
-                .findByTypeAndValue(ConfigurationTypes.USER_SMTP, username)
+                .findByType(ConfigurationTypes.USER_SMTP)
                 .orElseThrow(LoginFailedException::new);
 
-        /*
-        ConfigurationEntity passwordConfig = configurationRepository
-                .findByApplicationAndType(userConfig.getApplication(), ConfigurationTypes.PASSWORD_SMTP)
-                .orElseThrow(LoginFailedException::new);
+       ConfigurationEntity passwordConfig = configurationRepository
+               .findByType(ConfigurationTypes.PASSWORD_SMTP)
+               .orElseThrow(LoginFailedException::new);
 
-         */
 
-        if (1 == 1 ) {
+        if (username.equals(userConfig.getValue()) && password.equals(passwordConfig.getValue()) ) {
            log.info("Authenticated successfully");
         } else {
             log.error("Invalid authentication !");

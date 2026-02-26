@@ -10,5 +10,6 @@ public enum ConfigurationTypes {
     PORT_SMTP,
     HOST_SMTP,
     SSL_SMTP,
-    TLS_SMTP
+    TLS_SMTP,
+    APP_FIRST_INITIALIZER
 }

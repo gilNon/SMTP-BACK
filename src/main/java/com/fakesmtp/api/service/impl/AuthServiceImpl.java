@@ -45,7 +45,6 @@ public class AuthServiceImpl implements AuthService {
             );
         }
 
-
         UserEntity user = UserMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.password()));
 

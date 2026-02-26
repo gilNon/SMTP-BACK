@@ -19,10 +19,16 @@ server:
     context-path: /api/v1
 smtp-server:
   user: ${USER_SMTP}
-  password: ${PASSWORD_SMTP}
   host: ${HOST_SMTP}
   ssl: ${SSL_SMTP},
-  tls: ${TLS_SMTP}
+  tls: ${TLS_SMTP},
+  port: ${PORT_SMTP}
+
+user-default:
+  name: ${NAME_DEFAULT}
+  lastName: ${LAST_NAME_DEFAULT}
+  email: ${EMAIL_DEFAULT}
+  password: ${PASSWORD_DEFAULT}
 
 jwt:
   secret: ${JWT_SECRET}
