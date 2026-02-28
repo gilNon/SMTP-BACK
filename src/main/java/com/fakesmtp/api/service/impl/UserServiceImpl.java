@@ -1,6 +1,7 @@
 package com.fakesmtp.api.service.impl;
 
 import com.fakesmtp.api.config.security.JwtService;
+import com.fakesmtp.api.dto.request.RegisterRequest;
 import com.fakesmtp.api.dto.request.UserUpdateRequest;
 import com.fakesmtp.api.dto.response.PagesDataResponse;
 import com.fakesmtp.api.dto.response.UserResponse;
@@ -87,4 +88,5 @@ public class UserServiceImpl implements UserService {
         user.setIsActive(false);
         userRepository.save(user);
     }
+
 }

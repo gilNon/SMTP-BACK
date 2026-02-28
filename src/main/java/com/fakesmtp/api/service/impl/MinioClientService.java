@@ -1,9 +1,7 @@
 package com.fakesmtp.api.service.impl;
 
 import com.fakesmtp.api.exception.GeneralException;
-import io.minio.GetPresignedObjectUrlArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import io.minio.http.Method;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,6 +64,18 @@ public class MinioClientService {
             log.error("Error getting file from MinIO: {}", e.getMessage());
             throw new GeneralException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Error getting file from FileStorage");
+        }
+    }
+
+    public void createBucket(String bucketName) {
+        try {
+            boolean bucketExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            if(!bucketExist) {
+                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+            }
+        } catch (Exception e) {
+            log.error("Error to create bucket: {}", e.getMessage());
+            throw new RuntimeException("Error to create bucket");
         }
     }
 

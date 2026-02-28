@@ -7,7 +7,6 @@ import com.fakesmtp.api.enums.MessageErrors;
 import com.fakesmtp.api.exception.GeneralException;
 import com.fakesmtp.api.mapper.EmailMapper;
 import com.fakesmtp.api.model.EmailEntity;
-import com.fakesmtp.api.model.UserEntity;
 import com.fakesmtp.api.repository.EmailRepository;
 import com.fakesmtp.api.repository.UserRepository;
 import com.fakesmtp.api.service.EmailService;
@@ -28,7 +27,6 @@ import java.util.UUID;
 public class EmailServiceImpl implements EmailService {
 
     private final EmailRepository emailRepository;
-    private final UserRepository userRepository;
     private final MinioClientService minioClientService;
     private final String bucketName;
 
@@ -38,7 +36,6 @@ public class EmailServiceImpl implements EmailService {
                             @Value("${minio.bucket-name}")
                             String bucketName) {
         this.emailRepository = emailRepository;
-        this.userRepository = userRepository;
         this.minioClientService = minioClientService;
         this.bucketName = bucketName;
     }
@@ -48,14 +45,16 @@ public class EmailServiceImpl implements EmailService {
      * @return ListEmailResponse containing a list of EmailResponse objects.
      */
     @Override
-    public PagesDataResponse<List<EmailResponse>> getAllEmails(Pageable pageable, String emailUser) {
+    public PagesDataResponse<List<EmailResponse>> getAllEmails(Pageable pageable) {
 
-        UserEntity user = userRepository.findByEmail(emailUser).orElseThrow(() ->
-                new GeneralException(HttpStatus.NOT_FOUND,
-                        MessageErrors.USER_NOT_FOUND.getMessage())
-        );
+        Page<EmailEntity> emailEntityPage = emailRepository.findAll(pageable);
+        emailEntityPage.forEach(this::enrichAttachmentsWithPresignedUrl);
+        return EmailMapper.toListEmailResponse(emailRepository.findAll(pageable));
+    }
 
-       return null;
+    private void enrichAttachmentsWithPresignedUrl(EmailEntity emailEntity) {
+        emailEntity.getAttachments()
+                .forEach(mediaEntity -> mediaEntity.setMediaURL(minioClientService.getFilePreSigned(bucketName,mediaEntity.getFolder() + "/" + mediaEntity.getFileName() )));
     }
 
     /**
@@ -65,50 +64,30 @@ public class EmailServiceImpl implements EmailService {
      * @throws RuntimeException if the email is not found.
      */
     @Override
-    public EmailResponse getEmailById(UUID idEmail, String emailUser) {
+    public EmailResponse getEmailById(UUID idEmail) {
 
-        UserEntity user = userRepository.findByEmail(emailUser).orElseThrow(() ->
-                new GeneralException(HttpStatus.NOT_FOUND,
-                        MessageErrors.USER_NOT_FOUND.getMessage())
+
+        EmailEntity emailEntity = emailRepository.findById(idEmail).orElseThrow(() ->
+                new GeneralException(HttpStatus.NOT_FOUND, MessageErrors.EMAIL_NOT_FOUND.getMessage())
         );
+       enrichAttachmentsWithPresignedUrl(emailEntity);
 
-
-
-        /*
-        email.getAttachments().forEach(media ->
-                media.setMediaURL(minioClientService.getFilePreSigned(
-                        bucketName,
-                        media.getFolder() + "/" + media.getFileName())
-                ));
-        */
-
-        return null;
+        return EmailMapper.toEmailResponse(emailEntity);
     }
 
     /**
      * Delete a specific email by its ID.
      *
      * @param idEmail        UUID of the email to delete.
-     * @param emailUser Email of the user who is deleting the email.
      */
     @Override
-    public void deleteEmail(UUID idEmail, String emailUser) {
-        /*
-        UserEntity user = userRepository.findByEmail(emailUser).orElseThrow(() ->
-                new GeneralException(HttpStatus.NOT_FOUND,
-                        MessageErrors.USER_NOT_FOUND.getMessage())
-        );
+    public void deleteEmail(UUID idEmail) {
+        EmailEntity emailEntity = emailRepository.findById(idEmail).
+                orElseThrow(() -> new GeneralException(HttpStatus.NOT_FOUND, MessageErrors.EMAIL_NOT_FOUND.getMessage()));
 
-        EmailEntity email = emailRepository.findByIdEmailAndApplication(idEmail, user.getApplication()).orElseThrow(() ->
-                new GeneralException(HttpStatus.NOT_FOUND,
-                        MessageErrors.EMAIL_NOT_FOUND.getMessage())
-        );
+        emailEntity.setStatus(EmailStatus.DELETED);
 
-        email.setStatus(EmailStatus.DELETED);
-        emailRepository.save(email);
-
-         */
-        return;
+        emailRepository.save(emailEntity);
     }
 
 }

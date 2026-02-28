@@ -40,10 +40,9 @@ public class EmailController {
                     size = 10,
                     sort = "createdAt",
                     direction = Sort.Direction.DESC
-            ) Pageable pageable,
-            @AuthenticationPrincipal UserDetails userDetails
+            ) Pageable pageable
     ) {
-        return ResponseEntity.ok(emailService.getAllEmails(pageable, userDetails.getUsername()));
+        return ResponseEntity.ok(emailService.getAllEmails(pageable));
     }
 
     /**
@@ -53,11 +52,10 @@ public class EmailController {
      */
     @GetMapping("/{idMail}")
     public ResponseEntity<EmailResponse> getMailById(
-            @PathVariable UUID idMail,
-            @AuthenticationPrincipal UserDetails userDetails
+            @PathVariable UUID idMail
     ) {
         log.info("Fetching mail with ID: {}", idMail);
-        return ResponseEntity.ok(emailService.getEmailById(idMail, userDetails.getUsername()));
+        return ResponseEntity.ok(emailService.getEmailById(idMail));
     }
 
 
@@ -67,10 +65,9 @@ public class EmailController {
      */
     @DeleteMapping("/{idEmail}")
     public ResponseEntity<Void> deleteEmailById(
-            @PathVariable UUID idEmail,
-            @AuthenticationPrincipal UserDetails userDetails
+            @PathVariable UUID idEmail
     ) {
-        emailService.deleteEmail(idEmail, userDetails.getUsername());
+        emailService.deleteEmail(idEmail);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

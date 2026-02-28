@@ -12,19 +12,6 @@ services:
       MINIO_ROOT_USER: changemeuser
       MINIO_ROOT_PASSWORD: changemepass
 
-  minio-buckets:
-    image: quay.io/minio/mc:latest
-    depends_on:
-      - minio
-    restart: on-failure
-    entrypoint: >
-      /bin/sh -c "
-      /usr/bin/mc alias set dockerminio http://minio:9000 changemeuser changemepass;
-      /usr/bin/mc mb dockerminio/yourbucketname;
-      exit 0;
-      "
-  
-
   postgres:
     image: postgres:16
     container_name: postgres-fake-smtp

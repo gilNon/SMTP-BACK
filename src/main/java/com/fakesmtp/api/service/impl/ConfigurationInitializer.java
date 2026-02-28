@@ -11,13 +11,16 @@ import com.fakesmtp.api.repository.ConfigurationRepository;
 import com.fakesmtp.api.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ConfigurationInitializer implements CommandLineRunner {
     
     private final ConfigurationRepository configurationRepository;
@@ -25,6 +28,10 @@ public class ConfigurationInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final SmtpProperties smtpProperties;
     private final UserDefaultProperties userDefaultProperties;
+    private final MinioClientService minioClientService;
+
+    @Value("${minio.bucket-name}")
+    private String bucketName;
     
     /**
      * @param args
@@ -36,6 +43,7 @@ public class ConfigurationInitializer implements CommandLineRunner {
 
         System.out.println(userDefaultProperties.getPassword());
         if (!configurationRepository.existsByType(ConfigurationTypes.APP_FIRST_INITIALIZER)) {
+            log.info("CREATING DEFAULT USER...");
             saveDefaultUser();
         }
 
@@ -44,9 +52,13 @@ public class ConfigurationInitializer implements CommandLineRunner {
                 ConfigurationEntity configuration = new ConfigurationEntity();
                 configuration.setType(type);
                 configuration.setValue(getDefaultValue(type));
+                log.info("CREATING DEFAULT {}...", type.name());
                 configurationRepository.save(configuration);
             }
         }
+        log.info("CREATING DEFAULT BUCKET...");
+        minioClientService.createBucket(bucketName);
+
     }
 
     private String getDefaultValue(ConfigurationTypes type) {
