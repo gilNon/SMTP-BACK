@@ -71,6 +71,7 @@ public class MinioClientService {
         try {
             boolean bucketExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if(!bucketExist) {
+                log.info("CREATING BUCKET {}...", bucketName);
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
             }
         } catch (Exception e) {

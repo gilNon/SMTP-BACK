@@ -47,10 +47,12 @@ public class UserMapper {
      */
     public static UserResponse toUserResponse(UserEntity userEntity) {
         return new UserResponse(
+                userEntity.getIdUser(),
                 userEntity.getFirstName(),
                 userEntity.getLastName(),
                 userEntity.getEmail(),
                 userEntity.getRoles().name(),
+                userEntity.getIsActive(),
                 userEntity.getCreatedAt(),
                 userEntity.getUpdatedAt()
         );

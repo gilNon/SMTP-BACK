@@ -56,7 +56,6 @@ public class ConfigurationInitializer implements CommandLineRunner {
                 configurationRepository.save(configuration);
             }
         }
-        log.info("CREATING DEFAULT BUCKET...");
         minioClientService.createBucket(bucketName);
 
     }

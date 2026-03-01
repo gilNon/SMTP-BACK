@@ -3,7 +3,7 @@ package com.fakesmtp.api.controller;
 import com.fakesmtp.api.dto.response.PagesDataResponse;
 import com.fakesmtp.api.dto.response.UserResponse;
 import com.fakesmtp.api.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -11,18 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Controller for handling user API requests.
  * @author Gilberto Vazquez
  */
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
@@ -43,6 +42,19 @@ public class UserController {
                     direction = Sort.Direction.DESC
             ) Pageable pageable
     ) {
-       return null;
+       return new ResponseEntity<>(userService.getAllUsers(pageable), HttpStatus.OK);
     }
+
+    @GetMapping("/{idUser}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable UUID idUser) {
+
+        return new ResponseEntity<>(userService.getUserByID(idUser), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{idUser}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable UUID idUser) {
+        userService.deleteUserById(idUser);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

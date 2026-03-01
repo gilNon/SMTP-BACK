@@ -1,12 +1,13 @@
 package com.fakesmtp.api.controller;
 
+import com.fakesmtp.api.dto.response.ConfigurationResponse;
 import com.fakesmtp.api.service.ServerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
 
 /**
  * Controller class for handling application-related operations.
@@ -17,17 +18,14 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ServerController {
 
-    private final ServerService applicationService;
+    private final ServerService serverService;
 
     /**
      * Controller method to delete an application by its ID.
-     * @param idApplication UUID application delete.
      */
-    @DeleteMapping("/info-server")
-    public ResponseEntity<Void> getInfoServer(
-            @PathVariable UUID idApplication
-    ) {
+    @GetMapping("/info-server")
+    public ResponseEntity<List<ConfigurationResponse>> getInfoServer() {
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(serverService.getInfoServerSMTP(), HttpStatus.OK);
     }
 }

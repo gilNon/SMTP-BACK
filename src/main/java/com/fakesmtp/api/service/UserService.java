@@ -6,6 +6,7 @@ import com.fakesmtp.api.dto.response.UserResponse;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Service interface for user operations.
@@ -22,11 +23,10 @@ public interface UserService {
 
     /**
      * Gets all users by application.
-     * @param userName the username of the user
      * @param pageable the page request
      * @return the list of users
      */
-    PagesDataResponse<List<UserResponse>> getAllUsers(String userName, Pageable pageable);
+    PagesDataResponse<List<UserResponse>> getAllUsers(Pageable pageable);
 
     /**
      * Updates a user by email.
@@ -38,8 +38,10 @@ public interface UserService {
 
     /**
      * Deletes a user by email.
-     * @param emailUser the email of the user
+     * @param idUser the email of the user
      */
-    void deleteUserByEmail(String emailUser);
+    void deleteUserById(UUID idUser);
+
+    UserResponse getUserByID(UUID idUser);
 
 }

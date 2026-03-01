@@ -1,7 +1,6 @@
 package com.fakesmtp.api.service.impl;
 
 import com.fakesmtp.api.config.security.JwtService;
-import com.fakesmtp.api.dto.request.RegisterRequest;
 import com.fakesmtp.api.dto.request.UserUpdateRequest;
 import com.fakesmtp.api.dto.response.PagesDataResponse;
 import com.fakesmtp.api.dto.response.UserResponse;
@@ -13,11 +12,13 @@ import com.fakesmtp.api.repository.UserRepository;
 import com.fakesmtp.api.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Service implementation for user operations.
@@ -49,13 +50,14 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Gets all users by application.
-     * @param userName the username of the user
      * @param pageable the page request
      * @return the list of users
      */
     @Override
-    public PagesDataResponse<List<UserResponse>> getAllUsers(String userName, Pageable pageable) {
-       return null;
+    public PagesDataResponse<List<UserResponse>> getAllUsers(Pageable pageable) {
+
+        Page<UserEntity> userEntityPage = userRepository.findAll(pageable);
+        return UserMapper.toUsersListResponse(userEntityPage);
     }
 
     /**
@@ -77,16 +79,30 @@ public class UserServiceImpl implements UserService {
     /**
      * Deletes a user by email.
      *
-     * @param emailUser the email of the user
+     * @param idUser the email of the user
      */
     @Override
-    public void deleteUserByEmail(String emailUser) {
-        UserEntity user = userRepository.findByEmail(emailUser)
+    public void deleteUserById(UUID idUser) {
+        UserEntity user = userRepository.findById(idUser)
                 .orElseThrow(() -> new GeneralException(HttpStatus.NOT_FOUND,
                         MessageErrors.USER_NOT_FOUND.getMessage()));
 
         user.setIsActive(false);
         userRepository.save(user);
+    }
+
+    /**
+     * @param idUser
+     * @return
+     */
+    @Override
+    public UserResponse getUserByID(UUID idUser) {
+
+        UserEntity userEntity = userRepository
+                .findById(idUser)
+                .orElseThrow(() -> new GeneralException(HttpStatus.NOT_FOUND, MessageErrors.USER_NOT_FOUND.getMessage()));
+
+        return UserMapper.toUserResponse(userEntity);
     }
 
 }
