@@ -1,96 +1,103 @@
-#OS
-.DS_Store
-Desktop.ini
-._*
-Thumbs.db
-.Spotlight-V100
-.Trashes
-
-#Java
-.mtj.tmp/
-*.class
-*.jar
-*.war
-*.ear
-*.nar
-hs_err_pid*
-
-#Python
-*.pyc
-__pycache__/
-*.py[cod]
-*$py.class
-
-#Node
-node_modules/
-.npm
-build/Releasedist
-dist/
-*.tsbuildinfo
-
-#Terraform
-terraform.tfstate*
-terraformscan.binary
-terraformscan.json
-
-#Environment
-.venv
-env/
-venv/
-ENV/
-env.bak
-venv.bak
-env.bak/
-venv.bak/
-
-#Logs
-*log.txt
-*.log
-*debug.log
-
-#Maven
+# Maven
 target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
-pom.xml.bak
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
-#Gradle
-bin/
-build/
-.gradle
-.gradletasknamecache
-gradle-app.setting
-!gradle-wrapper.jar
+# Compiled class files
+*.class
 
-#IntelliJ
-out/
-.idea/
-.idea_modules/
-*.iml
-*.ipr
-*.iws
-.settings/
+# Log files
+*.log
 
-#Eclipse
-bin/
-tmp/
-.metadata
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
+
+# Eclipse
 .classpath
+.project
+.settings/
+bin/
 
-#Visual Studio
-.vscode/*
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code
+.vscode/
 *.code-workspace
 
-#Backstage
-catalog-info.yaml
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
 
-/.run
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
 
-agent.md
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Application specific
+application-local.properties
+application-dev.properties
+*.env
+.env.local
+.env.*.local
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+*.db
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~.nib
