@@ -1,6 +1,6 @@
 spring:
   application:
-    name: fake-smtp-server
+    name: email-microservice
   jpa:
     hibernate:
       ddl-auto: none
@@ -17,6 +17,13 @@ server:
   port: ${SERVER_PORT:8080}
   servlet:
     context-path: /api/v1
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: "${EUREKA_SERVER_URL}"
 smtp-server:
   user: ${USER_SMTP}
   host: ${HOST_SMTP}
@@ -42,5 +49,7 @@ minio:
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+
 
 
