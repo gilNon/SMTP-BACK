@@ -1,0 +1,88 @@
+
+services:
+  minio:
+    image: quay.io/minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: [ "server", "--console-address", ":9001", "/data" ]
+    volumes:
+      - data-minio:/data
+    environment:
+      MINIO_ROOT_USER: changemeuser
+      MINIO_ROOT_PASSWORD: changemepass
+
+  postgres-emails:
+    image: postgres:16
+    container_name: postgres-emails
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: developer
+      POSTGRES_PASSWORD: developer
+      POSTGRES_DB: smtp_emails
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_emails_data:/var/lib/postgresql/data
+      - ./init/emails:/docker-entrypoint-initdb.d
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U developer -d smtp_emails"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-users:
+    image: postgres:16
+    container_name: postgres-users
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: developer
+      POSTGRES_PASSWORD: developer
+      POSTGRES_DB: smtp_users
+
+    ports:
+      - "5434:5432"
+
+    volumes:
+      - postgres_users_data:/var/lib/postgresql/data
+      - ./init/users:/docker-entrypoint-initdb.d
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U developer -d smtp_users" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-server-smtp:
+    image: postgres:16
+    container_name: postgres-server-smtp
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: developer
+      POSTGRES_PASSWORD: developer
+      POSTGRES_DB: smtp_server
+
+    ports:
+      - "5435:5432"
+
+    volumes:
+      - postgres_server_smtp_data:/var/lib/postgresql/data
+      - ./init/server-smtp:/docker-entrypoint-initdb.d
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U developer -d smtp_server" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_emails_data:
+  postgres_users_data:
+  postgres_server_smtp_data:
+  data-minio:
