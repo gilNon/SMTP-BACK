@@ -27,7 +27,7 @@ services:
 
     volumes:
       - postgres_emails_data:/var/lib/postgresql/data
-      - ./init/emails:/docker-entrypoint-initdb.d
+      - ./init/media:/docker-entrypoint-initdb.d
 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U developer -d smtp_emails"]
@@ -35,25 +35,25 @@ services:
       timeout: 5s
       retries: 5
 
-  postgres-users:
+  postgres-media:
     image: postgres:16
-    container_name: postgres-users
+    container_name: postgres-media
     restart: unless-stopped
 
     environment:
       POSTGRES_USER: developer
       POSTGRES_PASSWORD: developer
-      POSTGRES_DB: smtp_users
+      POSTGRES_DB: smtp_media
 
     ports:
       - "5434:5432"
 
     volumes:
-      - postgres_users_data:/var/lib/postgresql/data
-      - ./init/users:/docker-entrypoint-initdb.d
+      - postgres_media_data:/var/lib/postgresql/data
+      - ./init/media:/docker-entrypoint-initdb.d
 
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U developer -d smtp_users" ]
+      test: [ "CMD-SHELL", "pg_isready -U developer -d smtp_media" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -83,6 +83,6 @@ services:
 
 volumes:
   postgres_emails_data:
-  postgres_users_data:
+  postgres_media_data:
   postgres_server_smtp_data:
   data-minio:

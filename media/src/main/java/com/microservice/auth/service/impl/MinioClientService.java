@@ -17,14 +17,15 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Slf4j
 public class MinioClientService {
+
     private final MinioClient minioClient;
+
+    private String bucketName = "smtp-media";
 
     /**
      * Method to upload a file to MinIO.
-     * @param bucketName name of bucket.
      */
     public void putObject(MultipartFile file,
-                          String bucketName,
                           String fileName) {
         try {
             minioClient.putObject(
@@ -32,7 +33,7 @@ public class MinioClientService {
                             .contentType(file.getContentType())
                             .stream(file.getInputStream(), file.getSize(), -1)
                             .bucket(bucketName)
-                            .object(file.getOriginalFilename())
+                            .object(fileName)
                             .build()
             );
         } catch (Exception e) {
@@ -44,11 +45,10 @@ public class MinioClientService {
 
     /**
      * Method to get a file from MinIO.
-     * @param bucketName name of bucket.
      * @param nameObject name of file.
      * @return file.
      */
-    public String getFilePreSigned(String bucketName, String nameObject) {
+    public String getFilePreSigned(String nameObject) {
         try {
             return minioClient.getPresignedObjectUrl(
                     GetPresignedObjectUrlArgs.builder()
@@ -65,7 +65,7 @@ public class MinioClientService {
         }
     }
 
-    public void createBucket(String bucketName) {
+    public void createBucket() {
         try {
             boolean bucketExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if(!bucketExist) {
