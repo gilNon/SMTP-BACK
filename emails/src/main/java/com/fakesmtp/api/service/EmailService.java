@@ -1,5 +1,6 @@
 package com.fakesmtp.api.service;
 
+import com.fakesmtp.api.dto.request.EmailRequestDto;
 import com.fakesmtp.api.dto.response.EmailResponse;
 import com.fakesmtp.api.dto.response.PagesDataResponse;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,8 @@ import java.util.UUID;
  * @author Gilberto Vazquez
  */
 public interface EmailService {
+
+    EmailResponse saveEmail(EmailRequestDto emailRequestDto);
 
     /**
      * Retrieves all emails.

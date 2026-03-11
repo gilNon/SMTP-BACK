@@ -8,7 +8,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.type.SqlTypes;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -46,13 +45,6 @@ public class EmailEntity extends BaseModel {
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private EmailStatus status;
-
-    @OneToMany(
-        mappedBy = "email",
-        cascade = CascadeType.ALL,
-        fetch = FetchType.LAZY
-    )
-    List<MediaEntity> attachments;
 
     @Column(name = "cc")
     private String cc;

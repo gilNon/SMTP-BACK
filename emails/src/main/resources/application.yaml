@@ -10,9 +10,9 @@ spring:
         show_sql: true
         format_sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/${DB_NAME:smtp_db}
-    username: ${DB_USER:developer}
-    password: ${DB_PASSWORD:developer}
+    url: ${DB_URL_CONNECTION}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
 server:
   port: ${SERVER_PORT:8080}
   servlet:

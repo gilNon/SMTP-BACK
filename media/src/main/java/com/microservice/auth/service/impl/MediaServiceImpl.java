@@ -30,7 +30,7 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     @Transactional
-    public MediaResponseDto uploadMedia(MultipartFile file, UUID idEmail) {
+    public void uploadMedia(MultipartFile file, UUID idEmail) {
         if(file.isEmpty()) {
             throw new GeneralException(HttpStatus.BAD_REQUEST, "File is empty");
         }
@@ -48,11 +48,11 @@ public class MediaServiceImpl implements MediaService {
         log.info("URL: {}", url);
 
         minioClientService.putObject(file, url);
-        return mediaMapper.toMediaResponse(mediaEntity);
     }
 
     @Override
     public List<MediaResponseDto> getAllMediaByEmail(UUID idEmail) {
-        return List.of();
+        List<MediaEntity> mediaEntities = mediaRepository.findAllByIdEmail(idEmail);
+        return mediaEntities.stream().map(mediaMapper::toMediaResponse).toList();
     }
 }

@@ -1,5 +1,6 @@
 package com.fakesmtp.api.controller;
 
+import com.fakesmtp.api.dto.request.EmailRequestDto;
 import com.fakesmtp.api.dto.response.EmailResponse;
 import com.fakesmtp.api.dto.response.PagesDataResponse;
 import com.fakesmtp.api.service.EmailService;
@@ -10,8 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +28,11 @@ import java.util.UUID;
 public class EmailController {
 
     private final EmailService emailService;
+
+    @PostMapping
+    ResponseEntity<EmailResponse> saveEmail(@RequestBody EmailRequestDto emailRequestDto) {
+        return new ResponseEntity<>(emailService.saveEmail(emailRequestDto), HttpStatus.CREATED);
+    }
 
     /**
      * Endpoint to retrieve all emails.

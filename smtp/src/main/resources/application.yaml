@@ -9,3 +9,8 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: "${EUREKA_SERVER_URL}"
+client:
+  media:
+    url: "${MEDIA_MICROSERVICE_HOST}"
+  email:
+    url: "${EMAIL_MICROSERVICE_HOST}"

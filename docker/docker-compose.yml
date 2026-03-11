@@ -27,7 +27,7 @@ services:
 
     volumes:
       - postgres_emails_data:/var/lib/postgresql/data
-      - ./init/media:/docker-entrypoint-initdb.d
+      - ./init/emails:/docker-entrypoint-initdb.d
 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U developer -d smtp_emails"]

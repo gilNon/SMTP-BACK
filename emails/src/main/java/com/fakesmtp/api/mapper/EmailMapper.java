@@ -1,15 +1,16 @@
 package com.fakesmtp.api.mapper;
 
 import com.fakesmtp.api.config.smtp.ReceivedEmail;
+import com.fakesmtp.api.dto.request.EmailRequestDto;
 import com.fakesmtp.api.dto.response.EmailResponse;
 import com.fakesmtp.api.dto.response.PagesDataResponse;
 import com.fakesmtp.api.dto.response.PaginationResponse;
 import com.fakesmtp.api.enums.EmailStatus;
 import com.fakesmtp.api.model.EmailEntity;
-import com.fakesmtp.api.model.MediaEntity;
 import org.springframework.data.domain.Page;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,10 +45,7 @@ public class EmailMapper {
                 emailEntity.getRecipientAddress(),
                 emailEntity.getRecipientName(),
                 emailEntity.getStatus(),
-                emailEntity.getAttachments()
-                        .stream()
-                        .map(MediaMapper::toMediaResponse)
-                        .toList(),
+                new ArrayList<>(),
                 emailEntity.getCc(),
                 emailEntity.getBcc(),
                 emailEntity.getContentType(),
@@ -95,19 +93,21 @@ public class EmailMapper {
         emailEntity.setUpdatedAt(Instant.now());
         emailEntity.setHtmlContent(email.getHtmlContent());
         emailEntity.setTextContent(email.getTextContent());
-        emailEntity.setAttachments(email.getAttachments().stream().map(
-                attachment -> {
-                    MediaEntity mediaEntity = new MediaEntity();
-                    mediaEntity.setFileName(attachment.getName());
-                    mediaEntity.setCreatedAt(Instant.now());
-                    mediaEntity.setUpdatedAt(Instant.now());
-                    mediaEntity.setDataSource(attachment);
-                    mediaEntity.setFolder(UUID.randomUUID().toString());
-                    mediaEntity.setEmail(emailEntity);
+        return emailEntity;
+    }
 
-                    return mediaEntity;
-                }
-        ).toList());
+    public static EmailEntity toEmailEntity(EmailRequestDto emailRequestDto) {
+        EmailEntity emailEntity = new EmailEntity();
+        emailEntity.setBcc(emailRequestDto.bcc());
+        emailEntity.setCc(emailRequestDto.cc());
+        emailEntity.setContentType(emailRequestDto.contentType());
+        emailEntity.setHtmlContent(emailRequestDto.htmlContent());
+        emailEntity.setSubject(emailRequestDto.subject());
+        emailEntity.setRecipientAddress(emailRequestDto.recipientAddress());
+        emailEntity.setSenderAddress(emailRequestDto.senderAddress());
+        emailEntity.setTextContent(emailRequestDto.textContent());
+        emailEntity.setStatus(EmailStatus.RECEIVED);
+
         return emailEntity;
     }
 

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface MediaService {
 
-    MediaResponseDto uploadMedia(MultipartFile file, UUID idEmail);
+    void uploadMedia(MultipartFile file, UUID idEmail);
 
     List<MediaResponseDto> getAllMediaByEmail(UUID idEmail);
 
