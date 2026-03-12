@@ -1,6 +1,8 @@
 package com.microservice.smtp.config.smtp;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.microservice.smtp.restclient.EmailRestClient;
+import com.microservice.smtp.restclient.MediaRestClient;
+import com.microservice.smtp.service.EmailContentService;
 import org.springframework.stereotype.Component;
 import org.subethamail.smtp.MessageContext;
 import org.subethamail.smtp.MessageHandler;
@@ -13,15 +15,16 @@ import org.subethamail.smtp.MessageHandlerFactory;
 @Component
 public class SMTPListener implements MessageHandlerFactory {
 
+    private final EmailRestClient emailRestClient;
+    private final MediaRestClient mediaRestClient;
+    private final EmailContentService emailContentService;
 
-    public SMTPListener(EmailContentService emailContentService,
-                        EmailRepository emailRepository,
-                        MinioClientService minioClientService,
-                        @Value("${minio.bucket-name}") String bucketName) {
+    public SMTPListener(EmailRestClient emailRestClient,
+                        MediaRestClient mediaRestClient,
+                        EmailContentService emailContentService) {
+        this.emailRestClient = emailRestClient;
+        this.mediaRestClient = mediaRestClient;
         this.emailContentService = emailContentService;
-        this.emailRepository = emailRepository;
-        this.minioClientService = minioClientService;
-        this.bucketName = bucketName;
     }
 
     /**
@@ -31,7 +34,7 @@ public class SMTPListener implements MessageHandlerFactory {
     @Override
     public MessageHandler create(MessageContext ctx) {
 
-        return new SmtpMessageHandler(emailContentService, emailRepository, minioClientService, bucketName);
+        return new SmtpMessageHandler(emailRestClient, mediaRestClient, emailContentService);
     }
 
 }

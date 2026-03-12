@@ -75,7 +75,7 @@ public final class SmtpMessageHandler implements MessageHandler {
             );
 
             EmailResponseDto emailResponseDto = emailRestClient.saveEmail(emailRequestDto);
-            mediaRestClient.saveMedia(MultipartMapper.convert(receivedEmail.getAttachments()), emailResponseDto.idEmail());
+            mediaRestClient.saveMedia(MultipartMapper.convert(receivedEmail.getAttachments()), emailResponseDto.idEmail().toString());
 
             return null;
         } catch (Exception e) {

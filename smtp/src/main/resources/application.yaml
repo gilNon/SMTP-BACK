@@ -3,14 +3,20 @@ server:
 spring:
   application:
     name: smtp-microservice
+  datasource:
+    url: ${DB_URL_CONNECTION}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
       defaultZone: "${EUREKA_SERVER_URL}"
-client:
-  media:
-    url: "${MEDIA_MICROSERVICE_HOST}"
-  email:
-    url: "${EMAIL_MICROSERVICE_HOST}"
+
+smtp-server:
+  user: ${USER_SMTP}
+  host: ${HOST_SMTP}
+  ssl: ${SSL_SMTP}
+  tls: ${TLS_SMTP}
+  port: ${PORT_SMTP}

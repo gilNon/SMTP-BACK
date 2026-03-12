@@ -53,9 +53,9 @@ public class EmailContentServiceImpl implements EmailContentService {
             receivedEmail.setRecipientAddress(InternetAddress.toString(recipientAddresses));
             receivedEmail.setRecipientName(recipientAddresses[0].getPersonal());
             receivedEmail.setContentType(message.getContentType());
-            // Use here Apache library for parsing
+
             MimeMessageParser messageParser = new MimeMessageParser(message);
-            messageParser.parse(); // very important to parse before getting data
+            messageParser.parse();
             receivedEmail.setCc(messageParser.getCc().toString());
             receivedEmail.setBcc(messageParser.getBcc().toString());
             receivedEmail.setAttachments(messageParser.getAttachmentList());

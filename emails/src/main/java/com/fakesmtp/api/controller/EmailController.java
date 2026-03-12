@@ -22,7 +22,7 @@ import java.util.UUID;
  * @author Gilberto Vazquez
  */
 @RestController
-@RequestMapping("/emails")
+@RequestMapping("/api/v1/emails")
 @AllArgsConstructor
 @Slf4j
 public class EmailController {
