@@ -1,0 +1,11 @@
+﻿{
+    "contexts":  {
+                     "gatewayserver":  {
+                                           "mappings":  {
+                                                            "servletFilters":  "      ",
+                                                            "dispatcherServlets":  "@{dispatcherServlet=System.Object[]}",
+                                                            "servlets":  ""
+                                                        }
+                                       }
+                 }
+}

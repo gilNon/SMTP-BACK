@@ -1,7 +1,7 @@
 package com.fakesmtp.api.controller;
 
 import com.fakesmtp.api.dto.request.EmailRequestDto;
-import com.fakesmtp.api.dto.response.EmailResponse;
+import com.fakesmtp.api.dto.response.EmailResponseDto;
 import com.fakesmtp.api.dto.response.PagesDataResponse;
 import com.fakesmtp.api.service.EmailService;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class EmailController {
     private final EmailService emailService;
 
     @PostMapping
-    ResponseEntity<EmailResponse> saveEmail(@RequestBody EmailRequestDto emailRequestDto) {
+    ResponseEntity<EmailResponseDto> saveEmail(@RequestBody EmailRequestDto emailRequestDto) {
         return new ResponseEntity<>(emailService.saveEmail(emailRequestDto), HttpStatus.CREATED);
     }
 
@@ -39,7 +39,7 @@ public class EmailController {
      * @return ResponseEntity containing a list of EmailResponse objects.
      */
     @GetMapping
-    public ResponseEntity<PagesDataResponse<List<EmailResponse>>> getMails(
+    public ResponseEntity<PagesDataResponse<List<EmailResponseDto>>> getEmails(
             @PageableDefault(
                     size = 10,
                     sort = "createdAt",
@@ -55,7 +55,7 @@ public class EmailController {
      * @return ResponseEntity containing the EmailResponse object.
      */
     @GetMapping("/{idMail}")
-    public ResponseEntity<EmailResponse> getMailById(
+    public ResponseEntity<EmailResponseDto> getEmailById(
             @PathVariable UUID idMail
     ) {
         log.info("Fetching mail with ID: {}", idMail);

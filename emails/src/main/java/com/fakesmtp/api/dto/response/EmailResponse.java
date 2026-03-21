@@ -1,6 +1,7 @@
 package com.fakesmtp.api.dto.response;
 
 import com.fakesmtp.api.enums.EmailStatus;
+import lombok.Builder;
 
 import java.time.Instant;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.UUID;
  * Data Transfer Object representing an email response.
  * @author Gilberto Vazquez
  */
+@Builder
 public record EmailResponse(
        UUID idEmail,
        String htmlContent,

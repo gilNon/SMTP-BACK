@@ -2,6 +2,7 @@ package com.fakesmtp.api.service;
 
 import com.fakesmtp.api.dto.request.EmailRequestDto;
 import com.fakesmtp.api.dto.response.EmailResponse;
+import com.fakesmtp.api.dto.response.EmailResponseDto;
 import com.fakesmtp.api.dto.response.PagesDataResponse;
 import org.springframework.data.domain.Pageable;
 
@@ -15,19 +16,19 @@ import java.util.UUID;
  */
 public interface EmailService {
 
-    EmailResponse saveEmail(EmailRequestDto emailRequestDto);
+    EmailResponseDto saveEmail(EmailRequestDto emailRequestDto);
 
     /**
      * Retrieves all emails.
      * @return ListEmailResponse containing a list of EmailResponse objects.
      */
-    PagesDataResponse<List<EmailResponse>> getAllEmails(Pageable pageable);
+    PagesDataResponse<List<EmailResponseDto>> getAllEmails(Pageable pageable);
 
     /**
      * Retrieves a specific email by its ID.
      * @return EmailResponse object corresponding to the specified ID.
      */
-    EmailResponse getEmailById(UUID idEmail);
+    EmailResponseDto getEmailById(UUID idEmail);
 
     /**
      * Delete a specific email by its ID.

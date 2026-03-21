@@ -14,9 +14,11 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT}
 
 eureka:
+  instance:
+    preferIpAddress: true
   client:
     registerWithEureka: true
     fetchRegistry: true
@@ -44,9 +46,29 @@ minio:
   secret-key: ${MINIO_SECRET_KEY:changemepass}
   bucket-name: ${MINIO_BUCKET_NAME:fake-smtp}
 
-logging:
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: 1.0.0
+    description: Email microservice for SMTP BACKEND
 
 
 

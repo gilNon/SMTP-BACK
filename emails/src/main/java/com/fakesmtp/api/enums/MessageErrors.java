@@ -13,7 +13,8 @@ public enum MessageErrors {
     EMAIL_NOT_FOUND("Email not found"),
     INVALID_CREDENTIALS("Invalid or missing token"),
     ACCESS_DENIED("Access denied"),
-    APPLICATION_NOT_FOUND("Application not found");
+    APPLICATION_NOT_FOUND("Application not found"),
+    MEDIA_ERROR("Error getting media");
 
     private final String message;
 

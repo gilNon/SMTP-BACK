@@ -1,5 +1,5 @@
 server:
-  port: 8020
+  port: ${SERVER_PORT}
 spring:
   application:
     name: smtp-microservice
@@ -20,3 +20,27 @@ smtp-server:
   ssl: ${SSL_SMTP}
   tls: ${TLS_SMTP}
   port: ${PORT_SMTP}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: 1.0.0
+    description: SMTP microservice for SMTP BACKEND

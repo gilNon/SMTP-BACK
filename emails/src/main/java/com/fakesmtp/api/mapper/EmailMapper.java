@@ -3,10 +3,12 @@ package com.fakesmtp.api.mapper;
 import com.fakesmtp.api.config.smtp.ReceivedEmail;
 import com.fakesmtp.api.dto.request.EmailRequestDto;
 import com.fakesmtp.api.dto.response.EmailResponse;
+import com.fakesmtp.api.dto.response.EmailResponseDto;
 import com.fakesmtp.api.dto.response.PagesDataResponse;
 import com.fakesmtp.api.dto.response.PaginationResponse;
 import com.fakesmtp.api.enums.EmailStatus;
 import com.fakesmtp.api.model.EmailEntity;
+import com.fakesmtp.api.restclient.response.MediaResponseClientDto;
 import org.springframework.data.domain.Page;
 
 import java.time.Instant;
@@ -33,25 +35,23 @@ public class EmailMapper {
      * @param emailEntity the EmailEntity to convert
      * @return the corresponding EmailResponse
      */
-    public static EmailResponse toEmailResponse(EmailEntity emailEntity) {
+    public static EmailResponseDto toEmailResponse(EmailEntity emailEntity) {
 
-        return new EmailResponse(
-                emailEntity.getIdEmail(),
-                emailEntity.getHtmlContent(),
-                emailEntity.getTextContent(),
-                emailEntity.getSubject(),
-                emailEntity.getSenderAddress(),
-                emailEntity.getSenderName(),
-                emailEntity.getRecipientAddress(),
-                emailEntity.getRecipientName(),
-                emailEntity.getStatus(),
-                new ArrayList<>(),
-                emailEntity.getCc(),
-                emailEntity.getBcc(),
-                emailEntity.getContentType(),
-                emailEntity.getCreatedAt(),
-                emailEntity.getUpdatedAt()
-        );
+        return EmailResponseDto.builder()
+                .idEmail(emailEntity.getIdEmail())
+                .htmlContent(emailEntity.getHtmlContent())
+                .textContent(emailEntity.getTextContent())
+                .subject(emailEntity.getSubject())
+                .senderAddress(emailEntity.getSenderAddress())
+                .senderName(emailEntity.getSenderName())
+                .recipientName(emailEntity.getRecipientName())
+                .status(emailEntity.getStatus())
+                .cc(emailEntity.getCc())
+                .bcc(emailEntity.getBcc())
+                .contentType(emailEntity.getContentType())
+                .createdAt(emailEntity.getCreatedAt())
+                .updatedAt(emailEntity.getUpdatedAt())
+                .build();
     }
 
     /**
@@ -60,9 +60,9 @@ public class EmailMapper {
      * @param page the Page of EmailEntity to convert
      * @return the corresponding ListEmailResponse with pagination details
      */
-    public static PagesDataResponse<List<EmailResponse>> toListEmailResponse(Page<EmailEntity> page) {
+    public static PagesDataResponse<List<EmailResponseDto>> toListEmailResponse(Page<EmailEntity> page) {
 
-        List<EmailResponse> emailResponses = page.getContent()
+        List<EmailResponseDto> emailResponses = page.getContent()
                 .stream()
                 .map(EmailMapper::toEmailResponse)
                 .toList();

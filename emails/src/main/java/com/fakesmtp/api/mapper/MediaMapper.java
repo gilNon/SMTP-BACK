@@ -1,7 +1,7 @@
 package com.fakesmtp.api.mapper;
 
 import com.fakesmtp.api.dto.response.MediaResponse;
-import com.fakesmtp.api.model.MediaEntity;
+import com.fakesmtp.api.restclient.response.MediaResponseClientDto;
 
 /**
  * Mapper class for converting MediaEntity to MediaResponse.
@@ -19,17 +19,16 @@ public class MediaMapper {
     /**
      * Converts a MediaEntity to a MediaResponse.
      *
-     * @param mediaEntity the MediaEntity to convert
      * @return the corresponding MediaResponse
      */
-    public static MediaResponse toMediaResponse(MediaEntity mediaEntity) {
+    public static MediaResponse toMediaResponse(MediaResponseClientDto mediaResponseClientDto) {
 
         return new MediaResponse(
-                mediaEntity.getIdMedia(),
-                mediaEntity.getMediaURL(),
-                mediaEntity.getFileName(),
-                mediaEntity.getCreatedAt(),
-                mediaEntity.getUpdatedAt()
+                mediaResponseClientDto.idMedia(),
+                mediaResponseClientDto.url(),
+                mediaResponseClientDto.fileName(),
+                mediaResponseClientDto.createdAt(),
+                mediaResponseClientDto.updatedAt()
         );
     }
 }

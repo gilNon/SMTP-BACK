@@ -1,6 +1,5 @@
 package com.microservice.auth.service.impl;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +18,6 @@ public class ConfigurationInitializer implements CommandLineRunner {
      * @throws Exception
      */
     @Override
-    @Transactional
     public void run(@NotNull String... args) throws Exception {
         minioClientService.createBucket();
     }
